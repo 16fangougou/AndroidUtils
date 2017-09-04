@@ -1,3 +1,6 @@
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -6,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 /**
  * Created by SherlockHolmes on 2017/8/17.
@@ -64,13 +68,50 @@ public class RomUtil {
     /**
      * 判断是否为Flyme系统
      */
-    public static boolean isFlymeRom() {
+    public static boolean isFlymeRom(Context context) {
+        /**
+         * 此方法对flyme6无效
+         */
+//        try {
+//            // Invoke Build.hasSmartBar()
+//            final Method method = Build.class.getMethod("hasSmartBar");
+//            return method != null;
+//        } catch (final Exception e) {
+//            return false;
+//        }
+
+        return isInstalledByPkgName(context, "com.meizu.flyme.update");
+    }
+
+    /**
+     * 判断是否是Smartisan系统
+     * @param context
+     * @return
+     */
+    public static boolean isSmartisanRom(Context context) {
+        return isInstalledByPkgName(context, "com.smartisanos.security");
+    }
+
+    /**
+     * 根据包名判断这个app是否已安装
+     * @param context
+     * @param pkgName
+     * @return
+     */
+    public static boolean isInstalledByPkgName(Context context, String pkgName) {
+        PackageInfo packageInfo;
         try {
-            // Invoke Build.hasSmartBar()
-            final Method method = Build.class.getMethod("hasSmartBar");
-            return method != null;
-        } catch (final Exception e) {
+            packageInfo = context.getPackageManager().getPackageInfo(pkgName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            packageInfo = null;
+            e.printStackTrace();
+        }
+        if (packageInfo == null) {
+            Log.d(TAG, "isFlymeRom: true");
             return false;
+        } else {
+            Log.d(TAG, "isFlymeRom: false");
+            return true;
         }
     }
 
