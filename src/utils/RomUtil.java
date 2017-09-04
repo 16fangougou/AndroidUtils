@@ -79,7 +79,7 @@ public class RomUtil {
 //        } catch (final Exception e) {
 //            return false;
 //        }
-
+        Object obj = isInstalledByPkgName(context, "com.meizu.flyme.update") ? Log.d(TAG, "isFlymeRom: true") : Log.d(TAG, "isFlymeRom: false");
         return isInstalledByPkgName(context, "com.meizu.flyme.update");
     }
 
@@ -89,6 +89,7 @@ public class RomUtil {
      * @return
      */
     public static boolean isSmartisanRom(Context context) {
+        Object obj = isInstalledByPkgName(context, "com.smartisanos.security") ? Log.d(TAG, "isSmartisanRom: true") : Log.d(TAG, "isSmartisanRom: false");
         return isInstalledByPkgName(context, "com.smartisanos.security");
     }
 
@@ -107,10 +108,8 @@ public class RomUtil {
             e.printStackTrace();
         }
         if (packageInfo == null) {
-            Log.d(TAG, "isFlymeRom: true");
             return false;
         } else {
-            Log.d(TAG, "isFlymeRom: false");
             return true;
         }
     }
